@@ -348,7 +348,7 @@ function BrainHotspots({ sections = [], activeSection, onSelectSection, rigRef }
   )
 }
 
-function BrainRig({ sections, activeSection, onSelectSection }) {
+function BrainRig({ sections, activeSection, onSelectSection, isMobile = false }) {
   const group = useRef(null)
 
   useFrame(({ clock }) => {
@@ -367,7 +367,7 @@ function BrainRig({ sections, activeSection, onSelectSection }) {
           {experienceConfig.useBrainModel ? (
             <StaticNormalizedModel
               path={experienceConfig.brainModelPath}
-              targetSize={experienceConfig.brainTargetSize}
+              targetSize={isMobile ? experienceConfig.brainMobileTargetSize : experienceConfig.brainTargetSize}
               position={[0, 0, 0]}
               rotation={[0.02, 0, 0]}
               tintColor={experienceConfig.brainTintColor}
@@ -377,7 +377,7 @@ function BrainRig({ sections, activeSection, onSelectSection }) {
           )}
         </Suspense>
       </ModelErrorBoundary>
-      <BrainHotspots sections={sections} activeSection={activeSection} onSelectSection={onSelectSection} rigRef={group} />
+      {!isMobile && <BrainHotspots sections={sections} activeSection={activeSection} onSelectSection={onSelectSection} rigRef={group} />}
     </group>
   )
 }
@@ -402,11 +402,12 @@ function CameraRig({ mode, entering, controlsRef }) {
   const isBrain = mode === 'brain'
 
   useFrame((_, delta) => {
+    const mobile = window.matchMedia?.('(max-width: 760px), (pointer: coarse)')?.matches ?? false
     const basePosition = isBrain
-      ? experienceConfig.brainCameraPosition
+      ? (mobile ? experienceConfig.brainMobileCameraPosition : experienceConfig.brainCameraPosition)
       : entering
         ? experienceConfig.avatarHeadZoomCameraPosition
-        : experienceConfig.avatarCameraPosition
+        : (mobile ? experienceConfig.avatarMobileCameraPosition : experienceConfig.avatarCameraPosition)
 
     const baseTarget = isBrain
       ? experienceConfig.brainCameraTarget
@@ -431,12 +432,12 @@ function CameraRig({ mode, entering, controlsRef }) {
   return null
 }
 
-export function NeuralScene({ mode = 'avatar', entering = false, sections = [], activeSection = null, onSelectSection }) {
+export function NeuralScene({ mode = 'avatar', entering = false, sections = [], activeSection = null, onSelectSection, isMobile = false }) {
   const isBrain = mode === 'brain'
   const controlsRef = useRef(null)
   const camera = isBrain
-    ? { position: experienceConfig.brainCameraPosition, fov: 35 }
-    : { position: experienceConfig.avatarCameraPosition, fov: 30 }
+    ? { position: isMobile ? experienceConfig.brainMobileCameraPosition : experienceConfig.brainCameraPosition, fov: isMobile ? 40 : 35 }
+    : { position: isMobile ? experienceConfig.avatarMobileCameraPosition : experienceConfig.avatarCameraPosition, fov: isMobile ? 38 : 30 }
 
   return (
     <Canvas camera={camera} gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }} dpr={[1, 1.8]}>
@@ -445,7 +446,7 @@ export function NeuralScene({ mode = 'avatar', entering = false, sections = [], 
       <Stars radius={80} depth={38} count={isBrain ? 650 : 520} factor={isBrain ? 2.5 : 2} saturation={0} fade speed={0.24} />
 
       {isBrain ? (
-        <BrainRig sections={sections} activeSection={activeSection} onSelectSection={onSelectSection} />
+        <BrainRig sections={sections} activeSection={activeSection} onSelectSection={onSelectSection} isMobile={isMobile} />
       ) : (
         <>
           <IntroBackdrop entering={entering} />
@@ -461,13 +462,13 @@ export function NeuralScene({ mode = 'avatar', entering = false, sections = [], 
         ref={controlsRef}
         enabled={!entering}
         enablePan={false}
-        enableZoom={isBrain}
-        minDistance={isBrain ? 3.55 : 4.2}
-        maxDistance={isBrain ? 6.2 : 6.2}
-        rotateSpeed={isBrain ? 0.55 : 0.35}
+        enableZoom={isBrain && !isMobile}
+        minDistance={isBrain ? (isMobile ? 4.8 : 3.55) : 4.2}
+        maxDistance={isBrain ? (isMobile ? 6.4 : 6.2) : 6.2}
+        rotateSpeed={isBrain ? (isMobile ? 0.42 : 0.55) : 0.35}
         zoomSpeed={0.45}
-        minPolarAngle={isBrain ? Math.PI / 2.45 : Math.PI / 2.7}
-        maxPolarAngle={isBrain ? Math.PI / 1.58 : Math.PI / 1.7}
+        minPolarAngle={isBrain ? (isMobile ? Math.PI / 2.25 : Math.PI / 2.45) : Math.PI / 2.7}
+        maxPolarAngle={isBrain ? (isMobile ? Math.PI / 1.72 : Math.PI / 1.58) : Math.PI / 1.7}
         target={isBrain ? experienceConfig.brainCameraTarget : experienceConfig.avatarOrbitTarget}
       />
     </Canvas>

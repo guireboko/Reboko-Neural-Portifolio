@@ -2215,3 +2215,168 @@ button {
 .clean-transition::before {
   display: none !important;
 }
+
+/* v1.0.36 — rastro líquido e experiência mobile funcional */
+.mouse-energy-field,
+.mouse-energy-point {
+  display: none !important;
+}
+
+
+
+
+
+.mobile-brain-dock {
+  display: none;
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+  html,
+  body,
+  #root {
+    overflow: hidden;
+  }
+
+  .experience-shell {
+    min-height: 100dvh !important;
+  }
+
+  .mouse-energy-field {
+    display: none !important;
+  }
+
+  .minimal-identity {
+    top: 22px !important;
+    left: 20px !important;
+    right: 20px !important;
+    width: auto !important;
+    z-index: 8 !important;
+  }
+
+  .minimal-identity h1 {
+    font-size: clamp(2.2rem, 13vw, 4.1rem) !important;
+    max-width: 7ch !important;
+  }
+
+  .minimal-identity small {
+    max-width: 230px !important;
+    font-size: 0.86rem !important;
+  }
+
+  .robot-action-card {
+    left: 18px !important;
+    right: 18px !important;
+    bottom: 92px !important;
+    width: auto !important;
+    transform: none !important;
+    border-radius: 22px !important;
+  }
+
+  .go-cta-button {
+    right: 18px !important;
+    bottom: 22px !important;
+    min-width: 92px !important;
+    height: 52px !important;
+    border-radius: 18px !important;
+  }
+
+  .brain-topbar.compact {
+    top: 16px !important;
+    left: 16px !important;
+  }
+
+  .brain-topbar.compact button {
+    min-width: 88px !important;
+    height: 38px !important;
+    padding: 0 12px !important;
+    font-size: 0.86rem !important;
+  }
+
+  .experience-shell.brain .scene-layer {
+    transform: translateY(-6vh) !important;
+  }
+
+  .mobile-brain-dock {
+    pointer-events: auto;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+    z-index: 18;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(56, 189, 248, 0.13);
+    border-radius: 22px;
+    background: rgba(6, 8, 12, 0.78);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.48), 0 0 40px rgba(56, 189, 248, 0.06);
+  }
+
+  .mobile-brain-dock button {
+    height: 38px;
+    border: 1px solid rgba(56, 189, 248, 0.12);
+    border-radius: 14px;
+    color: rgba(226, 232, 240, 0.72);
+    background: rgba(255, 255, 255, 0.035);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.66rem;
+    font-weight: 800;
+  }
+
+  .mobile-brain-dock button.active {
+    color: #e0faff;
+    border-color: rgba(56, 189, 248, 0.36);
+    background: rgba(56, 189, 248, 0.1);
+    box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08), 0 0 18px rgba(56, 189, 248, 0.08);
+  }
+
+  .section-panel {
+    left: 10px !important;
+    right: 10px !important;
+    top: auto !important;
+    bottom: 104px !important;
+    transform: none !important;
+    width: auto !important;
+    max-height: 55dvh !important;
+    padding: 18px !important;
+    border-radius: 22px !important;
+    overflow: auto !important;
+    z-index: 22 !important;
+  }
+
+  .panel-topline {
+    margin-bottom: 10px !important;
+  }
+
+  .panel-topline span {
+    font-size: 0.7rem !important;
+  }
+
+  .section-panel h2 {
+    font-size: clamp(1.55rem, 8vw, 2.25rem) !important;
+  }
+
+  .section-panel strong {
+    font-size: 0.92rem !important;
+    margin-bottom: 10px !important;
+  }
+
+  .section-panel p,
+  .section-panel li,
+  .panel-details p {
+    font-size: 0.84rem !important;
+    line-height: 1.48 !important;
+  }
+
+  .panel-details {
+    display: none !important;
+  }
+
+  .section-panel ul {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+}

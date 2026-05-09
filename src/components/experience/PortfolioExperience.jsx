@@ -1,36 +1,34 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NeuralScene } from '../three/NeuralScene'
 import { portfolioSections } from '../../data/portfolioSections'
 import { experienceConfig } from '../../data/experienceConfig'
 
 const transitionDuration = 1320
 
-function MouseEnergyTrail({ points }) {
-  return (
-    <div className="mouse-energy-field" aria-hidden="true">
-      {points.map((point, index) => (
-        <span
-          key={point.id}
-          className={`mouse-energy-point point-${index % 4}`}
-          style={{ left: point.x, top: point.y }}
-        />
-      ))}
-    </div>
-  )
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 760px), (pointer: coarse)')
+    const update = () => setIsMobile(query.matches)
+    update()
+    query.addEventListener?.('change', update)
+    return () => query.removeEventListener?.('change', update)
+  }, [])
+
+  return isMobile
 }
 
 export function PortfolioExperience() {
   const [stage, setStage] = useState('avatar')
   const [activeSection, setActiveSection] = useState(null)
-  const [trailPoints, setTrailPoints] = useState([])
-  const trailIdRef = useRef(0)
-  const lastTrailRef = useRef(0)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const isMobile = useIsMobile()
 
   const active = portfolioSections.find((section) => section.id === activeSection)
   const isBrain = stage === 'brain'
   const isEntering = stage === 'entering'
-  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIsLoaded(true), 460)
@@ -63,26 +61,12 @@ export function PortfolioExperience() {
     setActiveSection(null)
   }
 
-  function handlePointerMove(event) {
-    const now = performance.now()
-    if (now - lastTrailRef.current < 38) return
-    lastTrailRef.current = now
-
-    const id = trailIdRef.current++
-    const point = { id, x: event.clientX, y: event.clientY }
-    setTrailPoints((current) => [...current.slice(-18), point])
-
-    window.setTimeout(() => {
-      setTrailPoints((current) => current.filter((item) => item.id !== id))
-    }, 820)
-  }
 
   return (
-    <main className={`experience-shell ${stage} ${isLoaded ? 'is-loaded' : 'is-loading'}`} onPointerMove={handlePointerMove}>
+    <main className={`experience-shell ${stage} ${isLoaded ? 'is-loaded' : 'is-loading'} ${isMobile ? 'is-mobile' : 'is-desktop'}`}>
       <div className="cosmos-gradient" />
       <div className="neural-noise" />
       <div className="scanlines" />
-      <MouseEnergyTrail points={trailPoints} />
 
       <section className="scene-layer" aria-label="Experiência 3D do portfólio">
         <NeuralScene
@@ -91,6 +75,7 @@ export function PortfolioExperience() {
           sections={portfolioSections}
           activeSection={activeSection}
           onSelectSection={setActiveSection}
+          isMobile={isMobile}
         />
       </section>
 
@@ -124,7 +109,7 @@ export function PortfolioExperience() {
               <span className="orbit-icon" />
               <span>
                 <strong>{isEntering ? 'Acessando o núcleo...' : experienceConfig.intro.hint}</strong>
-                <small>{isEntering ? 'Zoom neural iniciado' : 'Use o mouse para ver o robô por outros ângulos.'}</small>
+                <small>{isEntering ? 'Zoom neural iniciado' : isMobile ? 'Toque em Ir para continuar.' : 'Use o mouse para ver o robô por outros ângulos.'}</small>
               </span>
             </motion.div>
 
@@ -178,6 +163,20 @@ export function PortfolioExperience() {
               <button onClick={backToAvatar}>← Voltar</button>
             </header>
 
+            {isMobile && (
+              <nav className="mobile-brain-dock" aria-label="Áreas do portfólio">
+                {portfolioSections.map((section) => (
+                  <button
+                    key={section.id}
+                    className={activeSection === section.id ? 'active' : ''}
+                    onClick={() => setActiveSection(section.id)}
+                  >
+                    {section.label}
+                  </button>
+                ))}
+              </nav>
+            )}
+
             <AnimatePresence>
               {active && (
                 <motion.button
@@ -204,7 +203,7 @@ export function PortfolioExperience() {
                   transition={{ duration: 0.28 }}
                 >
                   <div className="panel-topline">
-                    <span>{active.code} / {active.label}</span>
+                    <span>{active.label}</span>
                     <button onClick={closePanel}>Fechar</button>
                   </div>
                   <h2>{active.title}</h2>
