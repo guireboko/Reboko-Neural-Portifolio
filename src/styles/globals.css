@@ -2380,3 +2380,27 @@ button {
     gap: 6px !important;
   }
 }
+
+/* v1.0.39 — remove DEFINITIVAMENTE qualquer rastro do mouse */
+.mouse-energy-field,
+.mouse-energy-point,
+.mouse-energy-point::after,
+.liquid-cursor,
+.liquid-cursor-field,
+.liquid-cursor-path,
+.liquid-trail,
+.liquid-trail-layer,
+.cursor-trail,
+.cursor-trail-layer,
+.cursor-glow,
+.pointer-trail,
+.pointer-trail-layer,
+.mouse-trail,
+.mouse-trail-layer,
+.svg-trail,
+.svg-cursor-trail {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
