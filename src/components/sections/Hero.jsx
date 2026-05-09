@@ -1,33 +1,51 @@
 import { motion } from 'framer-motion'
-import { Brain, Github, Linkedin, Sparkles } from 'lucide-react'
 import { profile } from '../../data/profile'
 import { NeuralScene } from '../three/NeuralScene'
 
+const metrics = [
+  { value: 'IAM', label: 'operação real' },
+  { value: 'SAP', label: 'ambiente corporativo' },
+  { value: 'IA', label: 'processo aumentado' },
+]
+
 export function Hero() {
   return (
-    <section className="hero section-shell">
-      <div className="hero-content">
+    <section className="hero hero-neural-fullscreen" id="home">
+      <div className="hero-neural-backdrop" aria-hidden="true" />
+
+      <motion.div
+        className="hero-visual hero-visual-signature hero-neural-stage"
+        initial={{ opacity: 0, scale: 0.985 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.1 }}
+      >
+        <div className="scanline" />
+        <NeuralScene />
+      </motion.div>
+
+      <div className="hero-content hero-neural-content">
         <motion.div
           className="eyebrow"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <Sparkles size={16} /> Portfólio interativo com IA e 3D
+          <span aria-hidden="true">●</span> Guilherme.OS / neural portfolio
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
+          transition={{ duration: 0.8, delay: 0.18 }}
         >
           {profile.headline}
         </motion.h1>
 
         <motion.p
+          className="hero-description"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.28 }}
         >
           {profile.description}
         </motion.p>
@@ -36,28 +54,46 @@ export function Hero() {
           className="hero-actions"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.38 }}
         >
-          <a href="#projects" className="primary-button">
-            <Brain size={18} /> Entrar no cérebro
+          <a href="#about" className="primary-button">
+            <span aria-hidden="true">↳</span> Entrar no cérebro
           </a>
-          <a href={profile.contact.github} className="ghost-button" target="_blank" rel="noreferrer">
-            <Github size={18} /> GitHub
-          </a>
-          <a href={profile.contact.linkedin} className="ghost-button" target="_blank" rel="noreferrer">
-            <Linkedin size={18} /> LinkedIn
+          <a href="#projects" className="ghost-button">
+            <span aria-hidden="true">▣</span> Ver projetos
           </a>
         </motion.div>
       </div>
 
       <motion.div
-        className="hero-visual"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.1, delay: 0.2 }}
+        className="neural-command-panel"
+        initial={{ opacity: 0, x: 24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.48 }}
       >
-        <NeuralScene />
+        <span>mapa neural</span>
+        <strong>clique nas áreas do cérebro</strong>
+        <p>Sobre · Método · Projetos · Skills · IA · Contato</p>
       </motion.div>
+
+      <motion.div
+        className="hero-metrics hero-neural-metrics"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.56 }}
+      >
+        {metrics.map((metric) => (
+          <div key={metric.value}>
+            <strong>{metric.value}</strong>
+            <span>{metric.label}</span>
+          </div>
+        ))}
+      </motion.div>
+
+      <div className="scroll-cue" aria-hidden="true">
+        <span />
+        role para explorar
+      </div>
     </section>
   )
 }

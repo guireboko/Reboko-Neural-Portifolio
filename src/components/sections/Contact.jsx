@@ -1,4 +1,3 @@
-import { Mail } from 'lucide-react'
 import { profile } from '../../data/profile'
 
 export function Contact() {
@@ -8,12 +7,15 @@ export function Contact() {
         <span className="contact-label">Contato</span>
         <h2>Vamos construir a próxima ideia?</h2>
         <p>
-          Este portfólio foi criado para representar minha forma de trabalhar: unir criatividade,
-          tecnologia, inteligência artificial e entrega prática.
+          Este portfólio representa minha forma de trabalhar: unir criatividade, tecnologia,
+          inteligência artificial, documentação e entrega prática para resolver problemas reais.
+        </p>
+        <p className="contact-meta">
+          {profile.location} · {profile.languages.join(' · ')}
         </p>
       </div>
       <a href={`mailto:${profile.contact.email}`} className="primary-button">
-        <Mail size={18} /> Entrar em contato
+        <span aria-hidden="true">✉</span> Entrar em contato
       </a>
     </section>
   )
