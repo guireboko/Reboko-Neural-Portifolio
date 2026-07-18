@@ -1,6 +1,6 @@
 # Reboko Neural Portfolio
 
-Portfólio interativo em React que representa a mente criativa de Reboko como um ambiente neural 3D. A proposta é mostrar projetos, habilidades e experiências de forma cinematográfica, unindo desenvolvimento web, inteligência artificial, design e narrativa visual.
+Portfólio interativo em React que representa a minha mente criativa como um ambiente neural 3D. A proposta é mostrar projetos, habilidades e experiências de forma cinematográfica, unindo desenvolvimento web, inteligência artificial, design e narrativa visual.
 
 ## Conceito
 
